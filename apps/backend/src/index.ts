@@ -1,6 +1,12 @@
+
+
+import multipart from '@fastify/multipart'
 import * as Fastify from 'fastify'
+import unzip from 'unzipper'
 
 const fastify = Fastify.fastify({ logger: true })
+
+fastify.register(multipart)
 
 fastify.get('/', async (_request, _reply) => {
   return {
@@ -11,6 +17,26 @@ fastify.get('/', async (_request, _reply) => {
 fastify.get('/health', async (_request, _reply) => {
   return {
     message: 'OK!'
+  }
+})
+
+fastify.post('/upload', async (req, reply) => {
+  const file = await req.file()
+  if (!file) {
+    reply.status(400).send({ message: 'Invalid File' })
+    return
+  }
+
+  const zip = file.file.pipe(unzip.Parse({ forceStream: true }))
+
+  for await (const entry of zip) {
+    const fileName = entry.path
+    console.log(fileName)
+    entry.autodrain()
+  }
+
+  return {
+    message: 'Uploaded'
   }
 })
 
