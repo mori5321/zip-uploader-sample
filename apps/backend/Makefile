@@ -1,0 +1,2 @@
+watch:
+	pnpm run watch
