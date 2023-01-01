@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "watch": "pnpm exec concurrently --kill-others \"pnpm run build:watch\" \"nodemon\"",
     "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json --watch --incremental",
     "start": "node dist/index.js",
+    "start:watch": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,5 +20,12 @@
   },
   "dependencies": {
     "fastify": "^4.10.2"
+  },
+  "nodemonConfig": {
+    "watch": [
+        "dist"
+    ],
+    "ext": "js",
+    "exec": "node dist/index.js"
   }
 }

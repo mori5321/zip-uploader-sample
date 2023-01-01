@@ -10,7 +10,7 @@ fastify.get('/', async (_request, _reply) => {
 
 fastify.get('/health', async (_request, _reply) => {
   return {
-    message: 'OK'
+    message: 'OK!'
   }
 })
 
